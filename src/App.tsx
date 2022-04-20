@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
+import { Navigation } from './containers/navigation/Navigation'
+import { LoginContainer } from './containers/auth/LoginContainer'
+import { SignupContainer } from './containers/auth/SignupContainer'
+import { BrowseContainer } from './containers/browse/BrowseContainer'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const location = useLocation()
+
+	return (
+		<AnimatePresence exitBeforeEnter>
+			<div className='min-h-screen relative p-4 bg-gray-light'>
+				<Navigation />
+				<Routes location={location} key={location.pathname}>
+					<Route path='/login' element={<LoginContainer />} />
+					<Route path='/sign-up' element={<SignupContainer />} />
+					<Route path='/' element={<BrowseContainer />} />
+				</Routes>
+			</div>
+		</AnimatePresence>
+	)
 }
 
-export default App;
+export default App
