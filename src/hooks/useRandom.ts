@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-type randomImage = {
-	image: string
-}
-
 export const useRandom = (count: string) => {
 	const [image, setImage] = useState('')
 

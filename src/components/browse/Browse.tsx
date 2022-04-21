@@ -1,6 +1,24 @@
+import { useState, useEffect } from 'react'
 import { IoImagesOutline } from 'react-icons/io5'
+import { useNavigate } from 'react-router-dom'
+import { useQueryContext } from '../../hooks/useQueryContext'
+import { useSearch } from '../../hooks/useSearch'
 
-export const Browse = () => {
+const Browse = () => {
+	const [query, setQuery] = useState('')
+	const navigate = useNavigate()
+	const { context } = useQueryContext()
+	const { error } = useSearch(context.query)
+
+	// useEffect(() => {
+	// 	context.setQuery(query)
+	// }, [context.setQuery])
+
+	const handleSubmit = () => {
+		context.setQuery(query)
+		navigate(`/browse/q=${query}`)
+	}
+
 	return (
 		<>
 			<div className='w-full lg:px-6'>
@@ -28,11 +46,14 @@ export const Browse = () => {
 				<div className='flex justify-start lg:justify-center'>
 					<form
 						className='relative flex w-full max-w-xl mt-6 lg:justify-center'
-						autoComplete='off'>
+						autoComplete='off'
+						onSubmit={handleSubmit}>
 						<input
 							type='text'
 							name='search'
 							placeholder='Search'
+							value={query}
+							onChange={event => setQuery(event.target.value)}
 							className='w-full px-4 py-3 font-semibold rounded-md outline-none bg-gray-light font-poppins text-blue-dark focus:ring-2 focus:ring-blue-dark '
 						/>
 						<button
@@ -46,3 +67,5 @@ export const Browse = () => {
 		</>
 	)
 }
+
+export default Browse

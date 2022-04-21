@@ -48,14 +48,14 @@ export const NavigationMenu = ({ isOpen, toggle }: menuProps) => {
 								{...myConfig}
 							/>
 						)}
-						{logged && currUser?.photoUrl !== null && (
+						{logged && currUser?.photoURL !== null && (
 							<img
 								src={`${currUser?.photoURL}`}
 								alt='user'
 								className='w-24 h-24 rounded-full'
 							/>
 						)}
-						{logged && currUser?.photoUrl === null && (
+						{logged && currUser?.photoURL === null && (
 							<Avatar
 								name={`${currUser?.displayName}`}
 								className='w-24 h-24 rounded-full'

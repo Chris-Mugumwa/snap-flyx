@@ -5,18 +5,20 @@ import { Navigation } from './containers/navigation/Navigation'
 import { LoginContainer } from './containers/auth/LoginContainer'
 import { SignupContainer } from './containers/auth/SignupContainer'
 import { BrowseContainer } from './containers/browse/BrowseContainer'
+import { SearchedContainer } from './containers/searched/SearchedContainer'
 
 function App() {
 	const location = useLocation()
 
 	return (
 		<AnimatePresence exitBeforeEnter>
-			<div className='min-h-screen relative p-4 bg-gray-light'>
+			<div className='relative min-h-screen p-4 bg-gray-light'>
 				<Navigation />
 				<Routes location={location} key={location.pathname}>
 					<Route path='/login' element={<LoginContainer />} />
 					<Route path='/sign-up' element={<SignupContainer />} />
 					<Route path='/' element={<BrowseContainer />} />
+					<Route path='/browse/q=:value' element={<SearchedContainer />} />
 				</Routes>
 			</div>
 		</AnimatePresence>

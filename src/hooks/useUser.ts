@@ -4,7 +4,7 @@ import { onAuthStateChanged } from 'firebase/auth'
 export {}
 
 export const useUser = () => {
-	const [currUser, setCurrUser] = <any | null>useState(null)
+	const [currUser, setCurrUser] = useState<any>(null)
 	const [logged, setLogged] = useState(false)
 
 	useEffect(() => {
@@ -17,7 +17,7 @@ export const useUser = () => {
 				setLogged(false)
 			}
 		})
-	}, [auth, setCurrUser, setLogged])
+	}, [setCurrUser, setLogged])
 
 	return { currUser, logged, auth }
 }

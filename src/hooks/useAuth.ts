@@ -37,7 +37,7 @@ export const useAuth = (provider: any) => {
 		}
 
 		return () => setClick(false)
-	}, [click, setClick])
+	}, [navigate, provider, click, setClick])
 
 	return { click, setClick }
 }

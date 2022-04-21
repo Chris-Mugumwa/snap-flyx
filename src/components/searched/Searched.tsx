@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { useRandoms } from '../../hooks/useRandoms'
+import { useQueryContext } from '../../hooks/useQueryContext'
 import { useModal } from '../../hooks/useModal'
 import { ImageProps, BreakpointProps } from '../../types/imageProps'
-import { ImageDetails } from './ImageDetails'
+import { ImageDetails } from '../browse/ImageDetails'
 import Masonry from 'react-masonry-css'
 export {}
 
-const BrowseImages = () => {
+const Searched = () => {
 	const [item, setItem] = useState<any>({})
-	const { images } = useRandoms('50')
 	const { open, toggleModal } = useModal()
+	const { context } = useQueryContext()
 
 	const breakpointObj: BreakpointProps = {
 		default: 4,
@@ -29,7 +29,7 @@ const BrowseImages = () => {
 				<Masonry
 					breakpointCols={breakpointObj}
 					className='flex w-auto gap-2'>
-					{images?.map((image: ImageProps) => (
+					{context?.data?.map((image: ImageProps) => (
 						<div className='overflow-hidden' key={image?.id}>
 							<img
 								src={`${image?.urls?.regular}`}
@@ -47,4 +47,4 @@ const BrowseImages = () => {
 	)
 }
 
-export default BrowseImages
+export default Searched

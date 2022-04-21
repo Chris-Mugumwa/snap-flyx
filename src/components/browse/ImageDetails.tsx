@@ -1,17 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useUser } from '../../hooks/useUser'
 import { db } from '../../firebase'
 import { doc, setDoc, deleteDoc } from 'firebase/firestore'
 import { ImageProps } from '../../types/imageProps'
 import { ToastContainer, toast } from 'react-toastify'
-import {
-	IoHeartOutline,
-	IoLinkOutline,
-	IoOpenOutline,
-	IoDownloadOutline,
-	IoCloseOutline,
-	IoThumbsUpOutline,
-} from 'react-icons/io5'
+import { IoHeartOutline, IoLinkOutline, IoCloseOutline } from 'react-icons/io5'
 import { AnimatePresence, motion } from 'framer-motion'
 export {}
 
@@ -22,7 +15,7 @@ type ToggleProps = {
 
 export const ImageDetails = ({ toggleModal, item }: ToggleProps) => {
 	const [active, setActive] = useState(false)
-	const { currUser, auth, logged } = useUser()
+	const { currUser, logged } = useUser()
 	const favouritesRef = doc(
 		db,
 		'users',

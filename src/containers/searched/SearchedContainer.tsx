@@ -1,21 +1,22 @@
 import React, { Suspense } from 'react'
-import { Loading } from '../../components/loading/Loading'
 import { useRandom } from '../../hooks/useRandom'
+import { Loading } from '../../components/loading/Loading'
+import { useQueryContext } from '../../hooks/useQueryContext'
 export {}
 
 const Browse = React.lazy(() => import('../../components/browse/Browse'))
 const BrowseTopics = React.lazy(
 	() => import('../../components/browse/BrowseTopics'),
 )
-const BrowseImages = React.lazy(
-	() => import('../../components/browse/BrowseImages'),
-)
+const Searched = React.lazy(() => import('../../components/searched/Searched'))
 
-export const BrowseContainer = () => {
+export const SearchedContainer = () => {
 	const { image } = useRandom('1')
+	const { context } = useQueryContext()
 
 	return (
 		<>
+			{context.loading && <Loading />}
 			<Suspense fallback={<Loading />}>
 				<section
 					className='relative h-[70vh] object-cover object-center w-[full] no-repeat'
@@ -31,7 +32,7 @@ export const BrowseContainer = () => {
 					</div>
 				</section>
 				<BrowseTopics />
-				<BrowseImages />
+				<Searched />
 			</Suspense>
 		</>
 	)
