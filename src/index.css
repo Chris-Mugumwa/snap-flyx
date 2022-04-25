@@ -42,6 +42,26 @@
 	.browse-link {
 		@apply px-4 py-2 transition-all duration-500 rounded-md bg-blue-dark text-gray-light font-libre-franklin w-fit;
 	}
+
+	.modal-container {
+		@apply fixed top-0 left-0 right-0 z-50 flex flex-col items-center justify-center w-full h-screen px-2 bg-black-faded;
+	}
+
+	.modal-subcontainer {
+		@apply flex flex-col items-center gap-4 p-4 opacity-100 bg-gray-light;
+	}
+
+	.modal-close {
+		@apply flex self-end p-2 transition-all duration-500 rounded-md cursor-pointer text-blue-dark justify-self-start hover:text-blue-dark hover:bg-white;
+	}
+
+	.modal-delete {
+		@apply w-6 h-6 transition-all duration-500 cursor-pointer text-blue-dark hover:text-red-500;
+	}
+
+	.modal-link {
+		@apply flex items-center gap-1 px-4 py-2 rounded-md bg-blue-dark text-gray-light;
+	}
 }
 
 @layer utilities {

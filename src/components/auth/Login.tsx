@@ -18,7 +18,6 @@ type FormValues = {
 	name: string
 	email: string
 	password: string
-	register: any
 }
 
 const schema = yup.object().shape({

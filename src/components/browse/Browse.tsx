@@ -17,13 +17,13 @@ const schema = yup.object().shape({
 const Browse = () => {
 	const [query, setQuery] = useState('')
 	const { context } = useQueryContext()
-	const { error } = useSearch(context.query)
+	const { error } = useSearch(context?.query)
 	const { handleSubmit, register } = useForm<SearchValues>({
 		resolver: yupResolver(schema),
 	})
 
 	const onSubmit = (data: SearchValues) => {
-		context.setQuery(data.search)
+		context?.setQuery(data.search)
 	}
 
 	if (error) console.log('An error has occurred')

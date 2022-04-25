@@ -1,14 +1,13 @@
 import { useUser } from '../../hooks/useUser'
 import { db } from '../../firebase'
-import { doc, deleteDoc } from 'firebase/firestore'
+import { doc, deleteDoc, DocumentData } from 'firebase/firestore'
 import { IoTrashOutline, IoLinkOutline, IoCloseOutline } from 'react-icons/io5'
 import { AnimatePresence, motion } from 'framer-motion'
-import { FavouriteProps } from './Favourites'
 export {}
 
 type ToggleProps = {
+	item: DocumentData
 	toggleModal: () => void
-	item: FavouriteProps
 }
 
 export const FavouriteDetails = ({ item, toggleModal }: ToggleProps) => {
@@ -35,9 +34,9 @@ export const FavouriteDetails = ({ item, toggleModal }: ToggleProps) => {
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}
-				className='fixed top-0 left-0 right-0 z-50 flex flex-col items-center justify-center w-full h-screen px-2 bg-black-faded'>
-				<div className='flex flex-col items-center gap-4 p-4 opacity-100 bg-gray-light'>
-					<div className='flex self-end p-2 transition-all duration-500 rounded-md cursor-pointer text-blue-dark justify-self-start hover:text-blue-dark hover:bg-white'>
+				className='modal-container'>
+				<div className='menu-subcontainer'>
+					<div className='menu-close'>
 						<IoCloseOutline onClick={toggle} className='w-6 h-6' />
 					</div>
 					<div className='flex justify-between w-full '>
@@ -53,7 +52,7 @@ export const FavouriteDetails = ({ item, toggleModal }: ToggleProps) => {
 						<div className='flex items-center gap-2'>
 							{logged && (
 								<IoTrashOutline
-									className='w-6 h-6 transition-all duration-500 cursor-pointer text-blue-dark hover:text-red-500'
+									className='modal-delete'
 									onClick={() => deleteFavourite()}
 								/>
 							)}
@@ -61,7 +60,7 @@ export const FavouriteDetails = ({ item, toggleModal }: ToggleProps) => {
 								href={`${item?.link}`}
 								target='_blank'
 								rel='noopener noreferrer'
-								className='flex items-center gap-1 px-4 py-2 rounded-md bg-blue-dark text-gray-light'>
+								className='modal-link'>
 								<IoLinkOutline /> <h5>Link</h5>
 							</a>
 						</div>

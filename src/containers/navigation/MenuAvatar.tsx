@@ -1,13 +1,12 @@
 import { useUser } from '../../hooks/useUser'
-import NiceAvatar, { genConfig } from 'react-nice-avatar'
-import { avatarProps } from '../../types/menuProp'
+import NiceAvatar, { AvatarFullConfig, genConfig } from 'react-nice-avatar'
 
 export {}
 
 export const MenuAvatar = () => {
 	const { logged } = useUser()
 
-	const config: avatarProps = {
+	const config: AvatarFullConfig = {
 		sex: 'woman',
 		faceColor: '#AC6651',
 		earSize: 'small',

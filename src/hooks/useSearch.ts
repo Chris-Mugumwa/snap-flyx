@@ -11,20 +11,20 @@ export const useSearch = (query: string) => {
 		getSearched(query)
 
 		return () => context?.setData([])
-	}, [query, context.setLoading, setError, context?.setData])
+	}, [query, context?.setLoading, setError, context?.setData])
 
 	const getSearched = async (query: string) => {
-		context.setLoading(true)
+		context?.setLoading(true)
 		await axios
 			.get(
 				`https://api.unsplash.com/search/photos?query=${query}&per_page=50&count=50&client_id=${process.env.REACT_APP_UNSPLASH_API_KEY}`,
 			)
 			.then(response => {
 				context?.setData(response.data.results)
-				context.setLoading(false)
+				context?.setLoading(false)
 			})
 			.catch(error => {
-				context.setLoading(false)
+				context?.setLoading(false)
 				setError(true)
 				console.log('An error has occurred: ', error)
 			})

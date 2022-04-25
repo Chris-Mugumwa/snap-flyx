@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 import { auth } from '../firebase'
-import { onAuthStateChanged } from 'firebase/auth'
+import { onAuthStateChanged, User } from 'firebase/auth'
 export {}
 
 export const useUser = () => {
-	const [currUser, setCurrUser] = useState<any>(null)
+	const [currUser, setCurrUser] = useState<User | null>(null)
 	const [logged, setLogged] = useState(false)
 
 	useEffect(() => {
-		onAuthStateChanged(auth, (user: any) => {
+		onAuthStateChanged(auth, user => {
 			if (user) {
 				setCurrUser(user)
 				setLogged(true)

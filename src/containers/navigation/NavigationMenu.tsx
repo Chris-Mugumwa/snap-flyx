@@ -1,13 +1,17 @@
 import { useUser } from '../../hooks/useUser'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { menuProps } from '../../types/menuProp'
 import { navMenuData, navMenuLogout } from './navData'
 import { MenuAvatar } from './MenuAvatar'
 import Avatar from 'react-avatar'
 import { IoEnterOutline, IoLogInOutline } from 'react-icons/io5'
 export {}
 
-export const NavigationMenu = ({ isOpen, toggle }: menuProps) => {
+type MenuProps = {
+	isOpen: boolean
+	toggle: () => void
+}
+
+export const NavigationMenu = ({ isOpen, toggle }: MenuProps) => {
 	const { currUser, logged, auth } = useUser()
 	const navigate = useNavigate()
 

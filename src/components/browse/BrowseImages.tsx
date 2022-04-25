@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSearch } from '../../hooks/useSearch'
 import { useQueryContext } from '../../hooks/useQueryContext'
 import { useModal } from '../../hooks/useModal'
@@ -16,7 +16,7 @@ export const breakpointObj: BreakpointProps = {
 
 const BrowseImages = () => {
 	const [query] = useState('random')
-	const [item, setItem] = useState<any>({})
+	const [item, setItem] = useState<ImageProps | any>(null)
 	const { error } = useSearch(query)
 	const { context } = useQueryContext()
 
