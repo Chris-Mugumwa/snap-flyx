@@ -36,7 +36,37 @@
 	}
 
 	.browse-image {
-		@apply mb-2 transition-all duration-500 cursor-pointer hover:scale-125;
+		@apply transition-all duration-500 cursor-pointer hover:scale-125;
+	}
+
+	.browse-link {
+		@apply px-4 py-2 transition-all duration-500 rounded-md bg-blue-dark text-gray-light font-libre-franklin w-fit;
+	}
+}
+
+@layer utilities {
+	@variants responsive {
+		.masonry {
+			column-count: 1;
+			column-gap: 0.5em;
+		}
+		.masonry-sm {
+			column-count: 2;
+			column-gap: 0.5em;
+		}
+		.masonry-md {
+			column-count: 3;
+			column-gap: 0.5em;
+		}
+
+		.masonry-lg {
+			column-count: 4;
+			column-gap: 0.5em;
+		}
+
+		.break-inside {
+			break-inside: avoid;
+		}
 	}
 }
 

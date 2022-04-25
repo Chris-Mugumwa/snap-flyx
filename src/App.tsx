@@ -5,7 +5,8 @@ import { Navigation } from './containers/navigation/Navigation'
 import { LoginContainer } from './containers/auth/LoginContainer'
 import { SignupContainer } from './containers/auth/SignupContainer'
 import { BrowseContainer } from './containers/browse/BrowseContainer'
-import { SearchedContainer } from './containers/searched/SearchedContainer'
+import { FavouritesContainer } from './containers/favourites/FavouritesContainer'
+import { UserImagesContainer } from './containers/user-images/UserImagesContainer'
 
 function App() {
 	const location = useLocation()
@@ -18,7 +19,8 @@ function App() {
 					<Route path='/login' element={<LoginContainer />} />
 					<Route path='/sign-up' element={<SignupContainer />} />
 					<Route path='/' element={<BrowseContainer />} />
-					<Route path='/browse/q=:value' element={<SearchedContainer />} />
+					<Route path='/favourites' element={<FavouritesContainer />} />
+					<Route path='/gallery' element={<UserImagesContainer />} />
 				</Routes>
 			</div>
 		</AnimatePresence>

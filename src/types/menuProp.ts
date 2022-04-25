@@ -17,5 +17,4 @@ export type avatarProps = {
 	hatStyle: any
 	hatColor: any
 	shirtColor: any
-	bgColor: any
 }

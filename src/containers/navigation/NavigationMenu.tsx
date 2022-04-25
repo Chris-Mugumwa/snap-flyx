@@ -1,8 +1,8 @@
 import { useUser } from '../../hooks/useUser'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { menuProps, avatarProps } from '../../types/menuProp'
+import { menuProps } from '../../types/menuProp'
 import { navMenuData, navMenuLogout } from './navData'
-import NiceAvatar, { genConfig } from 'react-nice-avatar'
+import { MenuAvatar } from './MenuAvatar'
 import Avatar from 'react-avatar'
 import { IoEnterOutline, IoLogInOutline } from 'react-icons/io5'
 export {}
@@ -10,24 +10,6 @@ export {}
 export const NavigationMenu = ({ isOpen, toggle }: menuProps) => {
 	const { currUser, logged, auth } = useUser()
 	const navigate = useNavigate()
-
-	const config: avatarProps = {
-		sex: 'woman',
-		faceColor: '#AC6651',
-		earSize: 'small',
-		eyeStyle: 'smile',
-		noseStyle: 'round',
-		mouthStyle: 'laugh',
-		shirtStyle: 'short',
-		glassesStyle: 'square',
-		hairColor: '#F48150',
-		hairStyle: 'normal',
-		hatStyle: 'beanie',
-		hatColor: '#fff',
-		shirtColor: '#9287FF',
-		bgColor: '#E5E5E5',
-	}
-	const myConfig = genConfig(config)
 
 	const signout = async () => {
 		auth.signOut().then(() => {
@@ -42,12 +24,7 @@ export const NavigationMenu = ({ isOpen, toggle }: menuProps) => {
 			<ul className='flex flex-col items-center justify-around w-full h-full'>
 				<div className='flex flex-col items-center gap-2 font-semibold font-libre-franklin text-blue-dark'>
 					<div className='relative '>
-						{!logged && (
-							<NiceAvatar
-								className={currUser !== null ? 'hidden' : 'w-24 h-24'}
-								{...myConfig}
-							/>
-						)}
+						{!logged && <MenuAvatar />}
 						{logged && currUser?.photoURL !== null && (
 							<img
 								src={`${currUser?.photoURL}`}

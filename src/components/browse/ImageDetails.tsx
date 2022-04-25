@@ -29,8 +29,12 @@ export const ImageDetails = ({ toggleModal, item }: ToggleProps) => {
 		console.log(active)
 		if (!active) {
 			setDoc(favouritesRef, {
-				id: item.id,
+				id: item?.id,
 				photoURL: item?.urls?.regular,
+				username: item?.user?.username,
+				link: item?.user?.links?.html,
+				profileURL: item?.user?.profile_image?.medium,
+				active: true,
 			}).then(() => {
 				toast('Image added to favourites')
 			})

@@ -1,29 +1,38 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import { useForm } from 'react-hook-form'
 import { IoImagesOutline } from 'react-icons/io5'
-import { useNavigate } from 'react-router-dom'
 import { useQueryContext } from '../../hooks/useQueryContext'
 import { useSearch } from '../../hooks/useSearch'
 
+type SearchValues = {
+	search: string
+}
+
+const schema = yup.object().shape({
+	search: yup.string().required('Required'),
+})
+
 const Browse = () => {
 	const [query, setQuery] = useState('')
-	const navigate = useNavigate()
 	const { context } = useQueryContext()
 	const { error } = useSearch(context.query)
+	const { handleSubmit, register } = useForm<SearchValues>({
+		resolver: yupResolver(schema),
+	})
 
-	// useEffect(() => {
-	// 	context.setQuery(query)
-	// }, [context.setQuery])
-
-	const handleSubmit = () => {
-		context.setQuery(query)
-		navigate(`/browse/q=${query}`)
+	const onSubmit = (data: SearchValues) => {
+		context.setQuery(data.search)
 	}
+
+	if (error) console.log('An error has occurred')
 
 	return (
 		<>
 			<div className='w-full lg:px-6'>
 				<div className='flex flex-col w-full gap-2'>
-					<span className='absolute content-["" w-2 rounded-full bg-yellow-dark h-full]'></span>
+					<span className='absolute content-[""] w-2 rounded-full bg-yellow-dark h-full]'></span>
 					<div className='relative flex items-center w-full px-3'>
 						<span className='absolute top-0 left-0 content-["*"] w-1 rounded-full h-full bg-yellow-dark'></span>
 						<div className='text-white font-libre-franklin'>
@@ -47,10 +56,10 @@ const Browse = () => {
 					<form
 						className='relative flex w-full max-w-xl mt-6 lg:justify-center'
 						autoComplete='off'
-						onSubmit={handleSubmit}>
+						onSubmit={handleSubmit(onSubmit)}>
 						<input
 							type='text'
-							name='search'
+							{...register('search')}
 							placeholder='Search'
 							value={query}
 							onChange={event => setQuery(event.target.value)}
