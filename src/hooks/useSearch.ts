@@ -11,7 +11,7 @@ export const useSearch = (query: string) => {
 		getSearched(query)
 
 		return () => context?.setData([])
-	}, [query, context?.setLoading, setError, context?.setData])
+	}, [query, context.setLoading, setError, context.setData])
 
 	const getSearched = async (query: string) => {
 		context?.setLoading(true)
