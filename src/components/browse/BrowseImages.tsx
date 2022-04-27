@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useSearch } from '../../hooks/useSearch'
 import { useQueryContext } from '../../hooks/useQueryContext'
 import { useModal } from '../../hooks/useModal'

@@ -4,6 +4,8 @@
 	"private": true,
 	"dependencies": {
 		"@hookform/resolvers": "^2.8.8",
+		"@react-query-firebase/auth": "^0.3.4",
+		"@react-query-firebase/firestore": "^0.4.2",
 		"@testing-library/jest-dom": "^5.14.1",
 		"@testing-library/react": "^12.0.0",
 		"@testing-library/user-event": "^13.2.1",

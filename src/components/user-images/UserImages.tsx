@@ -10,84 +10,88 @@ import {
 	onSnapshot,
 	DocumentData,
 } from 'firebase/firestore'
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import {
+	ref,
+	uploadBytes,
+	getDownloadURL,
+	StorageReference,
+} from 'firebase/storage'
 import Masonry from 'react-masonry-css'
 import { breakpointObj } from '../../components/browse/BrowseImages'
 import { NotLogged } from '../error/NotLogged'
 import { Image } from './Image'
 import { v4 as uuidv4 } from 'uuid'
 import { IoAddOutline } from 'react-icons/io5'
+import PuffLoader from 'react-spinners/PuffLoader'
 export {}
 
 const UserImages = () => {
+	const [loading, setLoading] = useState(false)
 	const [imageUrl, setImageUrl] = useState<string | null>(null)
-	const [file, setFile] = useState<FileList | any>([])
+	const [file, setFile] = useState<FileList | any>(null)
 	const [list, setList] = useState<DocumentData[]>([])
-	const [image, setImage] = useState<string>('')
+	const [image, setImage] = useState<DocumentData>([])
 	const { currUser, logged } = useUser()
 	const { open, toggleModal } = useModal()
 	const imagesRef = collection(db, 'users', `${currUser?.uid}`, 'images')
-	// const imagesRef = ref(storage, `images/${currUser?.uid}/`)
-
+	const storeRef = doc(
+		db,
+		'users',
+		`${currUser?.uid}`,
+		'images',
+		`${uuidv4()}`,
+	)
 	const types = ['image/png', 'image/jpeg']
 
 	useEffect(() => {
 		onSnapshot(imagesRef, snapshot => {
 			setList(snapshot?.docs?.map(doc => doc.data()))
 		})
-	}, [setList, imagesRef, setImageUrl])
+	}, [setImageUrl, setLoading, imagesRef])
 
 	useEffect(() => {
-		console.log('First')
+		setLoading(true)
 		if (imageUrl !== null) {
-			console.log('Second')
-			const storeRef = doc(
-				db,
-				'users',
-				`${currUser?.uid}`,
-				'images',
-				`${uuidv4()}`,
-			)
 			setDoc(storeRef, {
 				id: uuidv4(),
 				ImageURL: imageUrl,
 			}).then(() => {
-				setFile([])
-				console.log('Added to firestore')
+				setFile(null)
+				setLoading(false)
 			})
 		} else {
 			setImageUrl(null)
-			console.log('Third')
 		}
 
 		return () => {
 			setImageUrl(null)
-			console.log('Fourth')
+			setFile(null)
 		}
 	}, [setImageUrl, imageUrl])
 
-	const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
-		let userImage = event.target?.files?.[0]
-		console.log(userImage)
+	const handleSubmit = async () => {
+		setLoading(true)
 		const imageRef = ref(
 			storage,
-			`images/${currUser?.uid}/${userImage?.name + uuidv4()}`,
+			`images/${currUser?.uid}/${file?.name + uuidv4()}`,
 		)
-
-		if (userImage && types.includes(userImage.type)) {
-			setFile(userImage)
+		if (file && types.includes(file?.type)) {
 			await uploadBytes(imageRef, file).then(snapshot => {
 				getDownloadURL(snapshot?.ref).then(url => {
 					console.log(url)
 					toast('Image added')
 					setImageUrl(url)
-					console.log('Image added')
 				})
 			})
 		} else {
-			setFile(null)
+			setFile([])
 			toast('File needs to be of type jpeg or png')
 		}
+	}
+
+	const toggle = (image: DocumentData) => {
+		setImage(image)
+		toggleModal()
 	}
 
 	return (
@@ -99,7 +103,7 @@ const UserImages = () => {
 					type='file'
 					name='file'
 					id='file'
-					onChange={handleSubmit}
+					onChange={event => setFile(event.target?.files?.[0])}
 					className='absolute w-1 h-1 overflow-hidden bg-white opacity-0 -z-10'
 				/>
 				<label
@@ -108,8 +112,21 @@ const UserImages = () => {
 					<IoAddOutline className='w-16 h-16 transition duration-300 bg-white rounded-full shadow-md text-blue-dark hover:shadow-lg hover:scale-105' />
 				</label>
 			</form>
+			<p className='font-semibold transition-all duration-500 text-blue-light font-libre-franklin'>
+				{file?.name}
+			</p>
+			<button
+				onClick={handleSubmit}
+				className={
+					file?.name?.length > 0
+						? 'transition-all duration-500 px-4 py-2 mt-2 rounded-md bg-blue-dark hover:ring-2 hover:ring-yellow-dark text-gray-light font-libre-franklin'
+						: 'hidden transition-all duration-500'
+				}>
+				Upload Image
+			</button>
 
 			<div className='py-10'>
+				{loading && <PuffLoader color='#14213D' size='60px' />}
 				<Masonry
 					breakpointCols={breakpointObj}
 					className='flex w-auto gap-2'>
@@ -119,13 +136,14 @@ const UserImages = () => {
 								src={`${url?.ImageURL}`}
 								alt='gallery'
 								loading='lazy'
-								onClick={() => setImage(image)}
+								onClick={() => toggle(url)}
 								className='browse-image'
 							/>
 						</div>
 					))}
 				</Masonry>
 			</div>
+
 			{open && <Image toggleModal={toggleModal} image={image} />}
 		</section>
 	)
