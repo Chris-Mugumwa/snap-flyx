@@ -2,62 +2,62 @@ import { useState, useEffect } from 'react'
 import { useUser } from '../../hooks/useUser'
 import { useModal } from '../../hooks/useModal'
 import { storage, db } from '../../firebase'
-import toast, { Toaster } from 'react-hot-toast'
 import {
-	doc,
 	collection,
-	setDoc,
+	addDoc,
 	onSnapshot,
 	DocumentData,
+	CollectionReference,
 } from 'firebase/firestore'
-import {
-	ref,
-	uploadBytes,
-	getDownloadURL,
-	StorageReference,
-} from 'firebase/storage'
+import toast, { Toaster } from 'react-hot-toast'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import Masonry from 'react-masonry-css'
 import { breakpointObj } from '../../components/browse/BrowseImages'
 import { NotLogged } from '../error/NotLogged'
 import { Image } from './Image'
-import { v4 as uuidv4 } from 'uuid'
 import { IoAddOutline } from 'react-icons/io5'
-import PuffLoader from 'react-spinners/PuffLoader'
+import ClipLoader from 'react-spinners/ClipLoader'
+import { v4 as uuidv4 } from 'uuid'
+import { motion } from 'framer-motion'
 export {}
 
 const UserImages = () => {
 	const [loading, setLoading] = useState(false)
 	const [imageUrl, setImageUrl] = useState<string | null>(null)
+	const [url, setUrl] = useState<string | null>(null)
+	const [description, setDescription] = useState<string | null>(null)
 	const [file, setFile] = useState<FileList | any>(null)
-	const [list, setList] = useState<DocumentData[]>([])
-	const [image, setImage] = useState<DocumentData>([])
+	const [imageList, setImageList] = useState<DocumentData[]>([])
 	const { currUser, logged } = useUser()
 	const { open, toggleModal } = useModal()
-	const imagesRef = collection(db, 'users', `${currUser?.uid}`, 'images')
-	const storeRef = doc(
-		db,
-		'users',
-		`${currUser?.uid}`,
-		'images',
-		`${uuidv4()}`,
-	)
-	const types = ['image/png', 'image/jpeg']
 
 	useEffect(() => {
+		const imagesRef: CollectionReference = collection(
+			db,
+			'users',
+			`${currUser?.uid}`,
+			'images',
+		)
 		onSnapshot(imagesRef, snapshot => {
-			setList(snapshot?.docs?.map(doc => doc.data()))
+			setImageList(snapshot?.docs?.map(doc => doc.data()))
 		})
-	}, [setImageUrl, setLoading, imagesRef])
+	}, [setImageList, currUser?.uid])
 
 	useEffect(() => {
-		setLoading(true)
+		const imagesRef: CollectionReference = collection(
+			db,
+			'users',
+			`${currUser?.uid}`,
+			'images',
+		)
 		if (imageUrl !== null) {
-			setDoc(storeRef, {
+			addDoc(imagesRef, {
+				imageUrl,
+				description: file?.name,
 				id: uuidv4(),
-				ImageURL: imageUrl,
 			}).then(() => {
-				setFile(null)
-				setLoading(false)
+				console.log('Added to firestore')
+				toast('Image added')
 			})
 		} else {
 			setImageUrl(null)
@@ -69,28 +69,27 @@ const UserImages = () => {
 		}
 	}, [setImageUrl, imageUrl])
 
+	const types = ['image/png', 'image/jpeg']
 	const handleSubmit = async () => {
 		setLoading(true)
-		const imageRef = ref(
-			storage,
-			`images/${currUser?.uid}/${file?.name + uuidv4()}`,
-		)
+		const imageRef = ref(storage, `images/${currUser?.uid}/${file?.name}`)
 		if (file && types.includes(file?.type)) {
 			await uploadBytes(imageRef, file).then(snapshot => {
 				getDownloadURL(snapshot?.ref).then(url => {
-					console.log(url)
-					toast('Image added')
 					setImageUrl(url)
+					setLoading(false)
+					setFile(null)
 				})
 			})
 		} else {
-			setFile([])
+			setFile(null)
 			toast('File needs to be of type jpeg or png')
 		}
 	}
 
-	const toggle = (image: DocumentData) => {
-		setImage(image)
+	const toggle = (url: string, description: string) => {
+		setUrl(url)
+		setDescription(description)
 		toggleModal()
 	}
 
@@ -119,32 +118,43 @@ const UserImages = () => {
 				onClick={handleSubmit}
 				className={
 					file?.name?.length > 0
-						? 'transition-all duration-500 px-4 py-2 mt-2 rounded-md bg-blue-dark hover:ring-2 hover:ring-yellow-dark text-gray-light font-libre-franklin'
+						? 'transition-all duration-500 px-4 py-2 mt-2 rounded-md bg-blue-dark hover:ring-2 hover:ring-yellow-dark text-gray-light font-libre-franklin w-48'
 						: 'hidden transition-all duration-500'
 				}>
-				Upload Image
+				{!loading && <h5>Upload Image</h5>}
+				{loading && <ClipLoader color='#FCA311' size='15px' />}
 			</button>
 
 			<div className='py-10'>
-				{loading && <PuffLoader color='#14213D' size='60px' />}
 				<Masonry
 					breakpointCols={breakpointObj}
 					className='flex w-auto gap-2'>
-					{list?.map((url: DocumentData) => (
-						<div className='mb-2 overflow-hidden' key={url?.id}>
+					{imageList?.map((url: DocumentData) => (
+						<motion.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							className='relative mb-2 overflow-hidden'
+							key={url?.id}>
 							<img
-								src={`${url?.ImageURL}`}
-								alt='gallery'
+								src={`${url?.imageUrl}`}
+								alt={`${url?.description}`}
 								loading='lazy'
-								onClick={() => toggle(url)}
+								onClick={() => toggle(url?.imageUrl, url?.description)}
 								className='browse-image'
 							/>
-						</div>
+						</motion.div>
 					))}
 				</Masonry>
 			</div>
 
-			{open && <Image toggleModal={toggleModal} image={image} />}
+			{open && (
+				<Image
+					toggleModal={toggleModal}
+					url={url}
+					description={description}
+				/>
+			)}
 		</section>
 	)
 }

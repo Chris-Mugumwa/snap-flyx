@@ -36,8 +36,8 @@ export const FavouriteDetails = ({ item, toggleModal }: ToggleProps) => {
 				exit={{ opacity: 0 }}
 				className='modal-container'>
 				<div className='menu-subcontainer'>
-					<div className='menu-close'>
-						<IoCloseOutline onClick={toggle} className='w-6 h-6' />
+					<div className='menu-close ' onClick={toggle}>
+						<IoCloseOutline className='w-6 h-6' />
 					</div>
 					<div className='flex justify-between w-full '>
 						<div className='flex items-center gap-2'>
@@ -51,10 +51,11 @@ export const FavouriteDetails = ({ item, toggleModal }: ToggleProps) => {
 
 						<div className='flex items-center gap-2'>
 							{logged && (
-								<IoTrashOutline
-									className='modal-delete'
-									onClick={() => deleteFavourite()}
-								/>
+								<div
+									className='menu-close '
+									onClick={() => deleteFavourite()}>
+									<IoTrashOutline className='w-6 h-6 modal-delete' />
+								</div>
 							)}
 							<a
 								href={`${item?.link}`}
