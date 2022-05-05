@@ -48,7 +48,7 @@
 	}
 
 	.modal-subcontainer {
-		@apply flex flex-col items-center gap-4 p-4 opacity-100 bg-gray-light;
+		@apply flex flex-col items-center gap-4 p-4 opacity-100 bg-gray-light min-w-fit;
 	}
 
 	.modal-close {
@@ -56,7 +56,7 @@
 	}
 
 	.modal-delete {
-		@apply w-6 h-6 transition-all duration-500 cursor-pointer text-blue-dark hover:text-red-500;
+		@apply flex self-end p-2 transition-all duration-500 rounded-md cursor-pointer text-blue-dark justify-self-start hover:text-red-600 hover:bg-white;
 	}
 
 	.modal-link {

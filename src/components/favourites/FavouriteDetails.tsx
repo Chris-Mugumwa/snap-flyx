@@ -35,8 +35,8 @@ export const FavouriteDetails = ({ item, toggleModal }: ToggleProps) => {
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}
 				className='modal-container'>
-				<div className='menu-subcontainer'>
-					<div className='menu-close ' onClick={toggle}>
+				<div className='modal-subcontainer'>
+					<div className='modal-close ' onClick={toggle}>
 						<IoCloseOutline className='w-6 h-6' />
 					</div>
 					<div className='flex justify-between w-full '>
@@ -46,7 +46,7 @@ export const FavouriteDetails = ({ item, toggleModal }: ToggleProps) => {
 								alt={`${item?.username}`}
 								className='w-10 h-10 rounded-full'
 							/>
-							<h5>{item?.username}</h5>
+							<h5 className='hidden md:inline-flex'>{item?.username}</h5>
 						</div>
 
 						<div className='flex items-center gap-2'>
@@ -69,7 +69,7 @@ export const FavouriteDetails = ({ item, toggleModal }: ToggleProps) => {
 					<img
 						src={`${item?.photoURL}`}
 						alt={`favourite`}
-						className='max-h-96'
+						className='min-w-full max-h-96 max-w-96'
 					/>
 				</div>
 			</motion.div>

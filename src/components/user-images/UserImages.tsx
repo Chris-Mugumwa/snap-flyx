@@ -25,6 +25,7 @@ const UserImages = () => {
 	const [loading, setLoading] = useState(false)
 	const [imageUrl, setImageUrl] = useState<string | null>(null)
 	const [url, setUrl] = useState<string | null>(null)
+	const [id, setId] = useState<string | null>(null)
 	const [description, setDescription] = useState<string | null>(null)
 	const [file, setFile] = useState<FileList | any>(null)
 	const [imageList, setImageList] = useState<DocumentData[]>([])
@@ -56,7 +57,6 @@ const UserImages = () => {
 				description: file?.name,
 				id: uuidv4(),
 			}).then(() => {
-				console.log('Added to firestore')
 				toast('Image added')
 			})
 		} else {
@@ -67,7 +67,7 @@ const UserImages = () => {
 			setImageUrl(null)
 			setFile(null)
 		}
-	}, [setImageUrl, imageUrl])
+	}, [setImageUrl, imageUrl, currUser?.uid])
 
 	const types = ['image/png', 'image/jpeg']
 	const handleSubmit = async () => {
@@ -87,9 +87,10 @@ const UserImages = () => {
 		}
 	}
 
-	const toggle = (url: string, description: string) => {
+	const toggle = (url: string, description: string, id: string) => {
 		setUrl(url)
 		setDescription(description)
+		setId(id)
 		toggleModal()
 	}
 
@@ -140,7 +141,7 @@ const UserImages = () => {
 								src={`${url?.imageUrl}`}
 								alt={`${url?.description}`}
 								loading='lazy'
-								onClick={() => toggle(url?.imageUrl, url?.description)}
+								onClick={() => toggle(url?.imageUrl, url?.description, url?.id)}
 								className='browse-image'
 							/>
 						</motion.div>
@@ -153,6 +154,7 @@ const UserImages = () => {
 					toggleModal={toggleModal}
 					url={url}
 					description={description}
+					id={id}
 				/>
 			)}
 		</section>

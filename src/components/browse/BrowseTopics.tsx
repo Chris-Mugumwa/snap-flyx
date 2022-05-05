@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useSearch } from '../../hooks/useSearch'
 import { useTopic } from '../../hooks/useTopic'
 import { useQueryContext } from '../../hooks/useQueryContext'
@@ -11,16 +12,14 @@ type TopicProps = {
 }
 
 const BrowseTopics = () => {
+	const navigate = useNavigate()
 	const { context } = useQueryContext()
 	const { topics } = useTopic()
 	const { error } = useSearch(context.query)
 
-	useEffect(() => {
-		getQuery(context.query)
-	}, [context.query, context.setQuery])
-
 	const getQuery = (value: string) => {
 		context.setQuery(value)
+		navigate('/searched')
 	}
 
 	if (error) console.log('An error has occurred')

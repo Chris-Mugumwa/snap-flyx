@@ -7,6 +7,7 @@ import { SignupContainer } from './containers/auth/SignupContainer'
 import { BrowseContainer } from './containers/browse/BrowseContainer'
 import { FavouritesContainer } from './containers/favourites/FavouritesContainer'
 import { UserImagesContainer } from './containers/user-images/UserImagesContainer'
+import {SearchedContainer} from './containers/searched/SearchedContainer'
 
 function App() {
 	const location = useLocation()
@@ -21,6 +22,7 @@ function App() {
 					<Route path='/' element={<BrowseContainer />} />
 					<Route path='/favourites' element={<FavouritesContainer />} />
 					<Route path='/gallery' element={<UserImagesContainer />} />
+					<Route path='/searched' element={<SearchedContainer />} />
 				</Routes>
 			</div>
 		</AnimatePresence>

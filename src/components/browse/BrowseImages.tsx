@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { useSearch } from '../../hooks/useSearch'
-import { useQueryContext } from '../../hooks/useQueryContext'
+import {useRandoms} from '../../hooks/useRandoms'
 import { useModal } from '../../hooks/useModal'
 import { ImageProps, BreakpointProps } from '../../types/imageProps'
 import { ImageDetails } from './ImageDetails'
@@ -15,11 +14,8 @@ export const breakpointObj: BreakpointProps = {
 }
 
 const BrowseImages = () => {
-	const [query] = useState('random')
 	const [item, setItem] = useState<ImageProps | any>(null)
-	const { error } = useSearch(query)
-	const { context } = useQueryContext()
-
+	const {loading, randoms} = useRandoms()
 	const { open, toggleModal } = useModal()
 
 	const toggle = (item: ImageProps) => {
@@ -27,26 +23,25 @@ const BrowseImages = () => {
 		toggleModal()
 	}
 
-	if (error) console.log('An error has occurred')
-
 	return (
 		<>
+			{loading && <p>...loading</p>}
 			<div className='w-full py-4 mt-2'>
 				<Masonry
 					breakpointCols={breakpointObj}
 					className='flex w-auto gap-2'>
-					{context?.data?.map((image: ImageProps) => (
+					{randoms?.map((image: ImageProps) => (
 						<div className='mb-2 overflow-hidden' key={image?.id}>
 							<img
 								src={`${image?.urls?.regular}`}
-								alt={image?.alt_description}
+								alt=''
 								onClick={() => toggle(image)}
-								loading='lazy'
 								className='browse-image'
 							/>
 						</div>
 					))}
 				</Masonry>
+				
 
 				{open && <ImageDetails toggleModal={toggleModal} item={item} />}
 			</div>
