@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useUser } from '../../hooks/useUser'
-import { storage } from '../../firebase'
-import { DocumentData } from 'firebase/firestore'
+import { db } from '../../firebase'
+import {doc ,deleteDoc, collection, query, where, getDocs} from 'firebase/firestore'
 import { IoCloseOutline, IoTrashOutline } from 'react-icons/io5'
 import { AnimatePresence, motion } from 'framer-motion'
 export {}
@@ -9,10 +9,34 @@ export {}
 type DetailsProps = {
 	url: string | null
 	description: string | null
+	id: string | null
 	toggleModal: () => void
 }
 
-export const Image = ({ toggleModal, url, description }: DetailsProps) => {
+export const Image = ({ toggleModal, url, description, id }: DetailsProps) => {
+	const [docId, setDocId] = useState<any>(null)
+	const { currUser } = useUser()
+
+	useEffect(() => {
+		const colRef = collection(db, 'users', `${currUser?.uid}`, 'images')
+		const q = query(colRef, where('id', '==', `${id}`))
+		const getId = async () => {
+			const querySnapshot = await getDocs(q)
+			querySnapshot.forEach(doc => setDocId(doc?.id))
+		}
+
+		getId()
+	}, [id, currUser?.uid])
+
+	const deleteImage = async () => {
+		if (docId !== null) {
+			const imageRef = await doc(db, 'users', `${currUser?.uid}`, 'images', `${docId}`)
+			await deleteDoc(imageRef).then(() => {
+				toggleModal()
+			})
+		}
+	}
+
 	return (
 		<AnimatePresence exitBeforeEnter>
 			<motion.div
@@ -22,8 +46,8 @@ export const Image = ({ toggleModal, url, description }: DetailsProps) => {
 				className='modal-container'>
 				<div className='modal-subcontainer'>
 					<div className='flex items-center justify-between w-full'>
-						<div className='menu-close'>
-							<IoTrashOutline className='w-6 h-6 modal-delete' />
+						<div className='modal-close' onClick={deleteImage}>
+							<IoTrashOutline className='w-6 h-6' />
 						</div>
 						<div className='modal-close'>
 							<IoCloseOutline
