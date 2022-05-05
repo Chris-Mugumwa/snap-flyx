@@ -1,35 +1,18 @@
+import { useState } from 'react'
 import { useUser } from '../../hooks/useUser'
-import { IoCloseOutline } from 'react-icons/io5'
+import { storage } from '../../firebase'
+import { DocumentData } from 'firebase/firestore'
+import { IoCloseOutline, IoTrashOutline } from 'react-icons/io5'
 import { AnimatePresence, motion } from 'framer-motion'
-import { db } from '../../firebase'
-import {
-	deleteDoc,
-	DocumentReference,
-	DocumentData,
-	doc,
-} from '@firebase/firestore'
-import { IoTrashOutline } from 'react-icons/io5'
 export {}
 
 type DetailsProps = {
+	url: string | null
+	description: string | null
 	toggleModal: () => void
-	image: DocumentData
 }
 
-export const Image = ({ image, toggleModal }: DetailsProps) => {
-	const { currUser } = useUser()
-	const imageRef = doc(
-		db,
-		'users',
-		`${currUser?.uid}`,
-		'images',
-		`${image?.id}`,
-	)
-
-	const deleteImage = () => {
-		deleteDoc(imageRef).then(() => toggleModal())
-	}
-
+export const Image = ({ toggleModal, url, description }: DetailsProps) => {
 	return (
 		<AnimatePresence exitBeforeEnter>
 			<motion.div
@@ -39,10 +22,9 @@ export const Image = ({ image, toggleModal }: DetailsProps) => {
 				className='modal-container'>
 				<div className='modal-subcontainer'>
 					<div className='flex items-center justify-between w-full'>
-						<IoTrashOutline
-							className='modal-delete'
-							onClick={() => deleteImage()}
-						/>
+						<div className='menu-close'>
+							<IoTrashOutline className='w-6 h-6 modal-delete' />
+						</div>
 						<div className='modal-close'>
 							<IoCloseOutline
 								onClick={toggleModal}
@@ -51,8 +33,8 @@ export const Image = ({ image, toggleModal }: DetailsProps) => {
 						</div>
 					</div>
 					<img
-						src={`${image?.ImageURL}`}
-						alt={`favourite`}
+						src={`${url}`}
+						alt={`${description}`}
 						className='w-auto max-h-96'
 					/>
 				</div>
