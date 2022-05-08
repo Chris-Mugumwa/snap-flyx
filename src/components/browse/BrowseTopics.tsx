@@ -1,8 +1,7 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useSearch } from '../../hooks/useSearch'
+import { NavLink } from 'react-router-dom'
 import { useTopic } from '../../hooks/useTopic'
 import { useQueryContext } from '../../hooks/useQueryContext'
+import { useTopicsSearch } from '../../hooks/useTopicsSearch'
 export {}
 
 type TopicProps = {
@@ -12,14 +11,12 @@ type TopicProps = {
 }
 
 const BrowseTopics = () => {
-	const navigate = useNavigate()
 	const { context } = useQueryContext()
 	const { topics } = useTopic()
-	const { error } = useSearch(context.query)
+	const { error } = useTopicsSearch(context.topic)
 
 	const getQuery = (value: string) => {
-		context.setQuery(value)
-		navigate('/searched')
+		context.setTopic(value)
 	}
 
 	if (error) console.log('An error has occurred')
@@ -28,12 +25,17 @@ const BrowseTopics = () => {
 		<div className='flex justify-center w-full px-4 py-8'>
 			<div className='flex justify-center w-[95%] flex-wrap gap-2 '>
 				{topics?.map((topic: TopicProps) => (
-					<div
+					<NavLink
+						to={`/topic/${topic?.slug}`}
 						key={topic?.id}
-						className='cursor-pointer browse-link hover:ring-2 hover:ring-yellow-dark'
+						className={({ isActive }) =>
+							isActive
+								? 'cursor-pointer browse-link ring-2 ring-yellow-dark'
+								: 'cursor-pointer browse-link hover:ring-2 hover:ring-yellow-dark'
+						}
 						onClick={() => getQuery(topic?.slug)}>
 						<h2 className='text-center w-fit max-w-48'>{topic?.title}</h2>
-					</div>
+					</NavLink>
 				))}
 			</div>
 		</div>

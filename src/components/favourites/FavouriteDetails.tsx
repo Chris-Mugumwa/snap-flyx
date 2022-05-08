@@ -46,15 +46,14 @@ export const FavouriteDetails = ({ item, toggleModal }: ToggleProps) => {
 								alt={`${item?.username}`}
 								className='w-10 h-10 rounded-full'
 							/>
-							<h5 className='hidden md:inline-flex'>{item?.username}</h5>
 						</div>
 
 						<div className='flex items-center gap-2'>
 							{logged && (
 								<div
-									className='menu-close '
+									className='modal-close '
 									onClick={() => deleteFavourite()}>
-									<IoTrashOutline className='w-6 h-6 modal-delete' />
+									<IoTrashOutline className='w-6 h-6' />
 								</div>
 							)}
 							<a

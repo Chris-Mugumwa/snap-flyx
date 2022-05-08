@@ -1,29 +1,24 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
-import { useRandoms } from '../../hooks/useRandoms'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useModal } from '../../hooks/useModal'
-import { ImageProps, BreakpointProps } from '../../types/imageProps'
+import { useQueryContext } from '../../hooks/useQueryContext'
+import { ImageProps } from '../../types/imageProps'
+import { ImageDetails } from '../browse/ImageDetails'
 import Masonry from 'react-masonry-css'
-import { ImageDetails } from './ImageDetails'
+import { breakpointObj } from '../browse/BrowseImages'
+
 export {}
 
-export const breakpointObj: BreakpointProps = {
-	default: 4,
-	1100: 3,
-	700: 2,
-	500: 1,
-}
-
-const BrowseImages = () => {
-	const [page, setPage] = useState<number>(1)
+const TopicsSearched = () => {
 	const [item, setItem] = useState<ImageProps | any>(null)
-	const { loading, randoms } = useRandoms(page)
 	const { open, toggleModal } = useModal()
+	const { context } = useQueryContext()
+
 	const loader = useRef<any>(null)
 
 	const handleObserver = useCallback(entries => {
 		const target = entries[0]
 		if (target.isIntersecting) {
-			setPage(prev => prev + 1)
+			context.setPage((prev: number) => prev + 1)
 		}
 	}, [])
 
@@ -42,33 +37,32 @@ const BrowseImages = () => {
 		toggleModal()
 	}
 
-	console.log(randoms)
-
+	console.log(context?.results)
 	return (
 		<>
-			<div className='w-full py-4 mt-2 overflow-y-scroll'>
+			<div className='w-full py-4 mt-2'>
 				<Masonry
 					breakpointCols={breakpointObj}
 					className='flex w-auto gap-2'>
-					{randoms?.map((image: any) => (
-						<div
-							className='mb-2 overflow-hidden break-inside'
-							key={image?.id}>
+					{context?.results?.map((image: ImageProps) => (
+						<div className='mb-2 overflow-hidden' key={image?.id}>
 							<img
 								src={`${image?.urls?.regular}`}
 								alt=''
 								onClick={() => toggle(image)}
+								loading='lazy'
 								className='browse-image'
 							/>
 						</div>
 					))}
 				</Masonry>
-				{loading && <p>...loading</p>}
+				{context.loading && <p>...loading</p>}
 				<div ref={loader} />
+
 				{open && <ImageDetails toggleModal={toggleModal} item={item} />}
 			</div>
 		</>
 	)
 }
 
-export default BrowseImages
+export default TopicsSearched

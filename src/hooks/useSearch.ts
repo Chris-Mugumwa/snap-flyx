@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import { useQueryContext } from './useQueryContext'
 export {}
@@ -7,16 +7,7 @@ export const useSearch = (query: string) => {
 	const [error, setError] = useState(false)
 	const { context } = useQueryContext()
 
-	useEffect(() => {
-		getSearched(query)
-	}, [
-		query,
-		context.setLoading,
-		setError,
-		context.setData,
-	])
-
-	const getSearched = async (query: string) => {
+	const getSearched = useCallback(async (query: string) => {
 		context?.setLoading(true)
 		await axios
 			.get(
@@ -31,7 +22,11 @@ export const useSearch = (query: string) => {
 				setError(true)
 				console.log('An error has occurred: ', error)
 			})
-	}
+	}, [])
+
+	useEffect(() => {
+		getSearched(query)
+	}, [query, context.setLoading, setError, context.setData, getSearched])
 
 	return { error }
 }

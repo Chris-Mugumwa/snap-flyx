@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useUser } from '../../hooks/useUser'
 import { db } from '../../firebase'
-import {doc ,deleteDoc, collection, query, where, getDocs} from 'firebase/firestore'
+import {
+	doc,
+	deleteDoc,
+	collection,
+	query,
+	where,
+	getDocs,
+} from 'firebase/firestore'
 import { IoCloseOutline, IoTrashOutline } from 'react-icons/io5'
 import { AnimatePresence, motion } from 'framer-motion'
 export {}
@@ -30,7 +37,13 @@ export const Image = ({ toggleModal, url, description, id }: DetailsProps) => {
 
 	const deleteImage = async () => {
 		if (docId !== null) {
-			const imageRef = await doc(db, 'users', `${currUser?.uid}`, 'images', `${docId}`)
+			const imageRef = await doc(
+				db,
+				'users',
+				`${currUser?.uid}`,
+				'images',
+				`${docId}`,
+			)
 			await deleteDoc(imageRef).then(() => {
 				toggleModal()
 			})
@@ -49,11 +62,8 @@ export const Image = ({ toggleModal, url, description, id }: DetailsProps) => {
 						<div className='modal-close' onClick={deleteImage}>
 							<IoTrashOutline className='w-6 h-6' />
 						</div>
-						<div className='modal-close'>
-							<IoCloseOutline
-								onClick={toggleModal}
-								className='w-6 h-6'
-							/>
+						<div className='modal-close' onClick={toggleModal}>
+							<IoCloseOutline className='w-6 h-6' />
 						</div>
 					</div>
 					<img

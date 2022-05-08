@@ -18,7 +18,7 @@ export const BrowseContainer = () => {
 		<>
 			<Suspense fallback={<Loading />}>
 				<section
-					className='relative h-[70vh] object-cover object-center w-[full] no-repeat'
+					className='relative h-[70vh] object-cover object-center w-[full] no-repeat overflow-y-auto'
 					style={{
 						backgroundImage: `url(${image})`,
 						backgroundRepeat: 'no-repeat',
