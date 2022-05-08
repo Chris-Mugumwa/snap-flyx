@@ -68,7 +68,6 @@ export const ImageDetails = ({ toggleModal, item }: ToggleProps) => {
 									alt={`${item?.user?.name}`}
 									className='w-10 h-10 rounded-full'
 								/>
-								<h5>{item?.user?.username}</h5>
 							</div>
 
 							<div className='flex items-center gap-2'>
