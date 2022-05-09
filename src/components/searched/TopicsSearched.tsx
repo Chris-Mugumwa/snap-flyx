@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useModal } from '../../hooks/useModal'
-import { useQueryContext } from '../../hooks/useQueryContext'
 import { ImageProps } from '../../types/imageProps'
 import { ImageDetails } from '../browse/ImageDetails'
 import Masonry from 'react-masonry-css'
@@ -9,16 +8,16 @@ import { breakpointObj } from '../browse/BrowseImages'
 export {}
 
 const TopicsSearched = () => {
+	const [page, setPage] = useState(1)
 	const [item, setItem] = useState<ImageProps | any>(null)
 	const { open, toggleModal } = useModal()
-	const { context } = useQueryContext()
 
 	const loader = useRef<any>(null)
 
 	const handleObserver = useCallback(entries => {
 		const target = entries[0]
 		if (target.isIntersecting) {
-			context.setPage((prev: number) => prev + 1)
+			setPage((prev: number) => prev + 1)
 		}
 	}, [])
 
@@ -37,14 +36,13 @@ const TopicsSearched = () => {
 		toggleModal()
 	}
 
-	console.log(context?.results)
 	return (
 		<>
 			<div className='w-full py-4 mt-2'>
 				<Masonry
 					breakpointCols={breakpointObj}
 					className='flex w-auto gap-2'>
-					{context?.results?.map((image: ImageProps) => (
+					{/* {results?.map((image: ImageProps) => (
 						<div className='mb-2 overflow-hidden' key={image?.id}>
 							<img
 								src={`${image?.urls?.regular}`}
@@ -54,9 +52,9 @@ const TopicsSearched = () => {
 								className='browse-image'
 							/>
 						</div>
-					))}
+					))} */}
 				</Masonry>
-				{context.loading && <p>...loading</p>}
+				{/* {loading && <p>...loading</p>} */}
 				<div ref={loader} />
 
 				{open && <ImageDetails toggleModal={toggleModal} item={item} />}
