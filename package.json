@@ -4,14 +4,11 @@
 	"private": true,
 	"dependencies": {
 		"@hookform/resolvers": "^2.8.8",
-		"@react-query-firebase/auth": "^0.3.4",
-		"@react-query-firebase/firestore": "^0.4.2",
 		"@reduxjs/toolkit": "^1.8.1",
 		"@types/jest": "^27.0.1",
 		"@types/node": "^16.7.13",
 		"@types/react": "17.0.2",
 		"@types/react-dom": "17.0.2",
-		"@types/react-infinite-scroll-component": "^5.0.0",
 		"axios": "^0.26.1",
 		"firebase": "^9.6.10",
 		"framer-motion": "^6.2.9",
@@ -24,7 +21,6 @@
 		"react-icons": "^4.3.1",
 		"react-masonry-css": "^1.0.16",
 		"react-nice-avatar": "^1.2.4",
-		"react-query": "^3.36.0",
 		"react-redux": "^8.0.1",
 		"react-router-dom": "6",
 		"react-scripts": "5.0.0",
@@ -65,7 +61,6 @@
 		"@types/uuid": "^8.3.4",
 		"autoprefixer": "^10.4.4",
 		"postcss": "^8.4.12",
-		"tailwind-scrollbar": "^1.3.1",
 		"tailwindcss": "^3.0.23",
 		"typescript": "^4.4.2"
 	}

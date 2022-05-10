@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { useAppSelector } from '../../app/hooks'
+import { getTopicImages } from '../../features/topicImagesSlice'
 import { useModal } from '../../hooks/useModal'
 import { ImageProps } from '../../types/imageProps'
 import { ImageDetails } from '../browse/ImageDetails'
@@ -11,6 +13,8 @@ const TopicsSearched = () => {
 	const [page, setPage] = useState(1)
 	const [item, setItem] = useState<ImageProps | any>(null)
 	const { open, toggleModal } = useModal()
+	const topicImages = useAppSelector(state => state.topic.topicImages)
+	console.log(topicImages)
 
 	const loader = useRef<any>(null)
 

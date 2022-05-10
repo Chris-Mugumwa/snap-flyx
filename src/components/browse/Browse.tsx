@@ -3,7 +3,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { IoImagesOutline } from 'react-icons/io5'
-import { useQueryContext } from '../../hooks/useQueryContext'
 import { useSearch } from '../../hooks/useSearch'
 
 type SearchValues = {
@@ -16,17 +15,16 @@ const schema = yup.object().shape({
 
 const Browse = () => {
 	const [query, setQuery] = useState('')
-	const { context } = useQueryContext()
-	const { error } = useSearch(context?.query)
+	// const { error } = useSearch(context?.query)
 	const { handleSubmit, register } = useForm<SearchValues>({
 		resolver: yupResolver(schema),
 	})
 
 	const onSubmit = (data: SearchValues) => {
-		context?.setQuery(data.search)
+		console.log(data.search)
 	}
 
-	if (error) console.log('An error has occurred')
+	// if (error) console.log('An error has occurred')
 
 	return (
 		<>

@@ -12,7 +12,6 @@ import { setDoc, doc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import Avatar from 'react-nice-avatar'
-import { ToastContainer, toast } from 'react-toastify'
 import SyncLoader from 'react-spinners/SyncLoader'
 import { SignupImage } from './SignupImage'
 import {
@@ -77,7 +76,6 @@ export const Signup = () => {
 						email: data.email,
 						photoURL: null,
 					}).then(() => {
-						toast(`Welcome ${data.name}`)
 						navigate('/')
 						setLoading(false)
 					})
@@ -88,7 +86,6 @@ export const Signup = () => {
 
 	return (
 		<>
-			<ToastContainer />
 			<section className='flex flex-col items-center justify-center w-full h-full lg:flex-row'>
 				<SignupImage />
 

@@ -7,7 +7,6 @@ import { signInWithEmailAndPassword, GoogleAuthProvider } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import Avatar from 'react-nice-avatar'
-import { ToastContainer, toast } from 'react-toastify'
 import SyncLoader from 'react-spinners/SyncLoader'
 import { SignupImage } from './SignupImage'
 import { IoLockClosedOutline, IoMailOutline } from 'react-icons/io5'
@@ -57,7 +56,6 @@ export const Login = () => {
 		setLoading(true)
 		signInWithEmailAndPassword(auth, data.email, data.password)
 			.then(() => {
-				toast(`Welcome ${data.name}`)
 				navigate('/')
 				setLoading(false)
 			})
@@ -66,7 +64,6 @@ export const Login = () => {
 
 	return (
 		<>
-			<ToastContainer />
 			<section className='flex flex-col items-center justify-center w-full h-full lg:flex-row'>
 				<div className='flex flex-col items-center justify-between w-full lg:w-[40%] xl:w-[30%] h-full lg:h-[38rem] gap-1 p-4 bg-white shadow-md md:w-96 shadow-gray-300'>
 					<Avatar className='w-32 h-32' />
