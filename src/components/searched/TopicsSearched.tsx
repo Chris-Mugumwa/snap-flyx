@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useModal } from '../../hooks/useModal'
-import { useQueryContext } from '../../hooks/useQueryContext'
+import { useQueryContext, useModal } from '../../hooks/hooksIndex'
 import { ImageProps } from '../../types/imageProps'
 import { ImageDetails } from '../browse/ImageDetails'
 import Masonry from 'react-masonry-css'
 import { breakpointObj } from '../browse/BrowseImages'
+import { LoadingInfinite } from '../loading/InfiniteLoader'
 
 export {}
 
@@ -12,7 +12,6 @@ const TopicsSearched = () => {
 	const [item, setItem] = useState<ImageProps | any>(null)
 	const { open, toggleModal } = useModal()
 	const { context } = useQueryContext()
-
 	const loader = useRef<any>(null)
 
 	const handleObserver = useCallback(entries => {
@@ -37,14 +36,14 @@ const TopicsSearched = () => {
 		toggleModal()
 	}
 
-	console.log(context?.results)
+	console.log(context.results)
 	return (
 		<>
-			<div className='w-full py-4 mt-2'>
+			<div className='w-full py-4 mt-2 flex flex-col items-center'>
 				<Masonry
 					breakpointCols={breakpointObj}
 					className='flex w-auto gap-2'>
-					{context?.results?.map((image: ImageProps) => (
+					{context.results?.map((image: ImageProps) => (
 						<div className='mb-2 overflow-hidden' key={image?.id}>
 							<img
 								src={`${image?.urls?.regular}`}
@@ -56,7 +55,7 @@ const TopicsSearched = () => {
 						</div>
 					))}
 				</Masonry>
-				{context.loading && <p>...loading</p>}
+				<LoadingInfinite />
 				<div ref={loader} />
 
 				{open && <ImageDetails toggleModal={toggleModal} item={item} />}

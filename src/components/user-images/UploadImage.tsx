@@ -12,16 +12,16 @@ import {
 import toast, { Toaster } from 'react-hot-toast'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import Masonry from 'react-masonry-css'
-import { breakpointObj } from '../../components/browse/BrowseImages'
+import { breakpointObj } from '../browse/BrowseImages'
 import { NotLogged } from '../error/NotLogged'
-import { Image } from './Image'
+import { UploadDetails } from './UploadDetails'
 import { IoAddOutline } from 'react-icons/io5'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { v4 as uuidv4 } from 'uuid'
 import { motion } from 'framer-motion'
 export {}
 
-const UserImages = () => {
+const UploadImage = () => {
 	const [loading, setLoading] = useState(false)
 	const [imageUrl, setImageUrl] = useState<string | null>(null)
 	const [url, setUrl] = useState<string | null>(null)
@@ -141,7 +141,9 @@ const UserImages = () => {
 								src={`${url?.imageUrl}`}
 								alt={`${url?.description}`}
 								loading='lazy'
-								onClick={() => toggle(url?.imageUrl, url?.description, url?.id)}
+								onClick={() =>
+									toggle(url?.imageUrl, url?.description, url?.id)
+								}
 								className='browse-image'
 							/>
 						</motion.div>
@@ -150,7 +152,7 @@ const UserImages = () => {
 			</div>
 
 			{open && (
-				<Image
+				<UploadDetails
 					toggleModal={toggleModal}
 					url={url}
 					description={description}
@@ -161,4 +163,4 @@ const UserImages = () => {
 	)
 }
 
-export default UserImages
+export default UploadImage

@@ -1,7 +1,9 @@
 import { NavLink } from 'react-router-dom'
-import { useTopic } from '../../hooks/useTopic'
-import { useQueryContext } from '../../hooks/useQueryContext'
-import { useTopicsSearch } from '../../hooks/useTopicsSearch'
+import {
+	useTopic,
+	useTopicsSearch,
+	useQueryContext,
+} from '../../hooks/hooksIndex'
 export {}
 
 type TopicProps = {
@@ -13,13 +15,13 @@ type TopicProps = {
 const BrowseTopics = () => {
 	const { context } = useQueryContext()
 	const { topics } = useTopic()
-	const { error } = useTopicsSearch(context.topic)
+	useTopicsSearch(context.topic)
 
 	const getQuery = (value: string) => {
+		context.setResults([])
+		context.setPage(1)
 		context.setTopic(value)
 	}
-
-	if (error) console.log('An error has occurred')
 
 	return (
 		<div className='flex justify-center w-full px-4 py-8'>

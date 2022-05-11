@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useRandoms } from '../../hooks/useRandoms'
-import { useModal } from '../../hooks/useModal'
+import { useRandoms, useModal } from '../../hooks/hooksIndex'
 import { ImageProps, BreakpointProps } from '../../types/imageProps'
 import Masonry from 'react-masonry-css'
 import { ImageDetails } from './ImageDetails'
+import { LoadingInfinite } from '../loading/InfiniteLoader'
 export {}
 
 export const breakpointObj: BreakpointProps = {
@@ -46,7 +46,7 @@ const BrowseImages = () => {
 
 	return (
 		<>
-			<div className='w-full py-4 mt-2 overflow-y-scroll'>
+			<div className='w-full py-4 mt-2 flex flex-col items-center'>
 				<Masonry
 					breakpointCols={breakpointObj}
 					className='flex w-auto gap-2'>
@@ -63,7 +63,7 @@ const BrowseImages = () => {
 						</div>
 					))}
 				</Masonry>
-				{loading && <p>...loading</p>}
+				<LoadingInfinite />
 				<div ref={loader} />
 				{open && <ImageDetails toggleModal={toggleModal} item={item} />}
 			</div>

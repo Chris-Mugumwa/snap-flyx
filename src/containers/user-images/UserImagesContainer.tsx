@@ -5,7 +5,7 @@ import { Loading } from '../../components/loading/Loading'
 export {}
 
 const UserImages = React.lazy(
-	() => import('../../components/user-images/UserImages'),
+	() => import('../../components/user-images/UploadImage'),
 )
 
 export const UserImagesContainer = () => {
