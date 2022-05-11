@@ -64,32 +64,6 @@
 	}
 }
 
-@layer utilities {
-	@variants responsive {
-		.masonry {
-			column-count: 1;
-			column-gap: 0.5em;
-		}
-		.masonry-sm {
-			column-count: 2;
-			column-gap: 0.5em;
-		}
-		.masonry-md {
-			column-count: 3;
-			column-gap: 0.5em;
-		}
-
-		.masonry-lg {
-			column-count: 4;
-			column-gap: 0.5em;
-		}
-
-		.break-inside {
-			break-inside: avoid;
-		}
-	}
-}
-
 ::-webkit-scrollbar {
 	width: 0.5rem;
 	height: 0.5rem;

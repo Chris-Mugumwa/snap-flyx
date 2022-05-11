@@ -3,8 +3,8 @@ import { useUser } from '../../hooks/useUser'
 import { db } from '../../firebase'
 import { doc, setDoc, deleteDoc } from 'firebase/firestore'
 import { ImageProps } from '../../types/imageProps'
-import { ToastContainer, toast } from 'react-toastify'
 import { IoHeartOutline, IoLinkOutline, IoCloseOutline } from 'react-icons/io5'
+import toast, { Toaster } from 'react-hot-toast'
 import { AnimatePresence, motion } from 'framer-motion'
 export {}
 
@@ -26,7 +26,6 @@ export const ImageDetails = ({ toggleModal, item }: ToggleProps) => {
 
 	const addFavourite = async (item: ImageProps) => {
 		setActive(prevState => !prevState)
-		console.log(active)
 		if (!active) {
 			setDoc(favouritesRef, {
 				id: item?.id,
@@ -36,19 +35,19 @@ export const ImageDetails = ({ toggleModal, item }: ToggleProps) => {
 				profileURL: item?.user?.profile_image?.medium,
 				active: true,
 			}).then(() => {
-				toast('Image added to favourites')
+				toast.success('Image added to favourites')
 			})
 		} else {
 			deleteDoc(favouritesRef).then(() => {
-				toast('Image removed from favourites')
+				toast.success('Image Deleted')
 			})
 		}
 	}
 
 	return (
 		<AnimatePresence exitBeforeEnter>
+			<Toaster position='top-right' reverseOrder={true} />
 			<>
-				<ToastContainer />
 				<motion.div
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}

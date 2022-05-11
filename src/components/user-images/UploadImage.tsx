@@ -11,14 +11,13 @@ import {
 } from 'firebase/firestore'
 import toast, { Toaster } from 'react-hot-toast'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import Masonry from 'react-masonry-css'
-import { breakpointObj } from '../browse/BrowseImages'
 import { NotLogged } from '../error/NotLogged'
 import { UploadDetails } from './UploadDetails'
 import { IoAddOutline } from 'react-icons/io5'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { v4 as uuidv4 } from 'uuid'
 import { motion } from 'framer-motion'
+import { MasonryGrid } from '../masonry/MasonryGrid'
 export {}
 
 const UploadImage = () => {
@@ -56,9 +55,11 @@ const UploadImage = () => {
 				imageUrl,
 				description: file?.name,
 				id: uuidv4(),
-			}).then(() => {
-				toast('Image added')
 			})
+				.then(() => {
+					toast.success('Image added')
+				})
+				.catch(() => toast.error('Could not upload image, try again.'))
 		} else {
 			setImageUrl(null)
 		}
@@ -83,7 +84,7 @@ const UploadImage = () => {
 			})
 		} else {
 			setFile(null)
-			toast('File needs to be of type jpeg or png')
+			toast.error('File needs to be of type jpeg or png')
 		}
 	}
 
@@ -97,7 +98,7 @@ const UploadImage = () => {
 	return (
 		<section className='flex flex-col items-center gap-4'>
 			{!logged && <NotLogged />}
-			<Toaster />
+			<Toaster position='top-right' reverseOrder={true} />
 			<form className='relative'>
 				<input
 					type='file'
@@ -119,17 +120,15 @@ const UploadImage = () => {
 				onClick={handleSubmit}
 				className={
 					file?.name?.length > 0
-						? 'transition-all duration-500 px-4 py-2 mt-2 rounded-md bg-blue-dark hover:ring-2 hover:ring-yellow-dark text-gray-light font-libre-franklin w-48'
+						? 'transition-all duration-500 px-4 py-2 mt-2 rounded-md bg-blue-dark hover:ring-2 hover:ring-yellow-dark text-gray-light font-libre-franklin w-48 flex justify-center items-center'
 						: 'hidden transition-all duration-500'
 				}>
 				{!loading && <h5>Upload Image</h5>}
-				{loading && <ClipLoader color='#FCA311' size='15px' />}
+				{loading && <ClipLoader color='#FFF' size='20px' />}
 			</button>
 
 			<div className='py-10'>
-				<Masonry
-					breakpointCols={breakpointObj}
-					className='flex w-auto gap-2'>
+				<MasonryGrid>
 					{imageList?.map((url: DocumentData) => (
 						<motion.div
 							initial={{ opacity: 0 }}
@@ -148,7 +147,7 @@ const UploadImage = () => {
 							/>
 						</motion.div>
 					))}
-				</Masonry>
+				</MasonryGrid>
 			</div>
 
 			{open && (

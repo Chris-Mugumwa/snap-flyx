@@ -1,11 +1,8 @@
-import { useUser } from '../../hooks/useUser'
 import NiceAvatar, { AvatarFullConfig, genConfig } from 'react-nice-avatar'
 
 export {}
 
 export const MenuAvatar = () => {
-	const { logged } = useUser()
-
 	const config: AvatarFullConfig = {
 		sex: 'woman',
 		faceColor: '#AC6651',
@@ -25,10 +22,7 @@ export const MenuAvatar = () => {
 
 	return (
 		<>
-			<NiceAvatar
-				className={!logged ? 'hidden' : 'w-24 h-24'}
-				{...myConfig}
-			/>
+			<NiceAvatar className='w-24 h-24' {...myConfig} />
 		</>
 	)
 }
