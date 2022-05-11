@@ -1,5 +1,6 @@
+import ClipLoader from 'react-spinners/ClipLoader'
 export {}
 
 export const LoadingInfinite = () => {
-	return <div>LoadingInfinite</div>
+	return <ClipLoader color='#FCA311' size='30px' />
 }

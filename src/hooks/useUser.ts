@@ -19,5 +19,5 @@ export const useUser = () => {
 		})
 	}, [setCurrUser, setLogged])
 
-	return { currUser, logged, auth }
+	return { currUser, logged, setLogged, auth }
 }

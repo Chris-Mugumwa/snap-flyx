@@ -20,7 +20,7 @@ type DetailsProps = {
 	toggleModal: () => void
 }
 
-export const Image = ({ toggleModal, url, description, id }: DetailsProps) => {
+export const UploadDetails = ({ toggleModal, url, description, id }: DetailsProps) => {
 	const [docId, setDocId] = useState<any>(null)
 	const { currUser } = useUser()
 

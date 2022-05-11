@@ -1,7 +1,7 @@
 import { useRandom } from '../../hooks/useRandom'
 export {}
 
-export const SignupImage = () => {
+export const AuthImage = () => {
 	const { image } = useRandom('1')
 
 	return (

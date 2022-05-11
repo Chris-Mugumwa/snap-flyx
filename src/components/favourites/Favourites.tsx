@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useUser } from '../../hooks/useUser'
 import { useModal } from '../../hooks/useModal'
-import { breakpointObj } from '../browse/BrowseImages'
 import { db } from '../../firebase'
 import { onSnapshot, collection, DocumentData } from 'firebase/firestore'
-import Masonry from 'react-masonry-css'
+import { MasonryGrid } from '../masonry/MasonryGrid'
 import { FavouriteDetails } from './FavouriteDetails'
 import { NotLogged } from '../error/NotLogged'
 import { motion } from 'framer-motion'
@@ -12,7 +11,7 @@ export {}
 
 const Favourites = () => {
 	const [item, setItem] = useState<DocumentData | any>(null)
-	const [favourites, setFavourites] = useState<DocumentData[] | null>(null)
+	const [favourites, setFavourites] = useState<DocumentData | null>(null)
 	const { currUser, logged } = useUser()
 	const { open, toggleModal } = useModal()
 
@@ -31,8 +30,8 @@ const Favourites = () => {
 	return (
 		<div className='relative'>
 			{!logged && <NotLogged />}
-			<Masonry breakpointCols={breakpointObj} className='flex w-auto gap-2'>
-				{favourites?.map((image: DocumentData) => (
+			<MasonryGrid>
+				{favourites?.map((image: any) => (
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
@@ -41,14 +40,14 @@ const Favourites = () => {
 						key={image?.id}>
 						<img
 							src={`${image?.photoURL}`}
-							alt='favourite'
+							alt='favourites'
 							loading='lazy'
 							onClick={() => toggle(image)}
 							className='browse-image'
 						/>
 					</motion.div>
 				))}
-			</Masonry>
+			</MasonryGrid>
 			{open && <FavouriteDetails item={item} toggleModal={toggleModal} />}
 		</div>
 	)

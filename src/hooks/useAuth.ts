@@ -4,7 +4,7 @@ import { setDoc, doc } from 'firebase/firestore'
 import { GoogleAuthProvider } from 'firebase/auth'
 import { signInWithPopup } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import toast from 'react-hot-toast'
 export {}
 
 export const useAuth = (provider: GoogleAuthProvider) => {
@@ -28,11 +28,12 @@ export const useAuth = (provider: GoogleAuthProvider) => {
 					} catch (error) {
 						console.error('Error adding document:', error)
 					}
-					toast(`Welcome ${user.displayName}`)
+					toast.success(`Welcome ${user.displayName}`)
 					navigate('/')
 				})
 				.catch(error => {
 					setClick(false)
+					toast.error('Something went wrong, try again')
 					console.error('Error authenticating user:', error)
 				})
 		}

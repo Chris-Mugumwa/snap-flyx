@@ -5,12 +5,12 @@ import * as yup from 'yup'
 import { auth } from '../../firebase'
 import { signInWithEmailAndPassword, GoogleAuthProvider } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../hooks/useAuth'
-import Avatar from 'react-nice-avatar'
-import { ToastContainer, toast } from 'react-toastify'
-import SyncLoader from 'react-spinners/SyncLoader'
-import { SignupImage } from './SignupImage'
+import { useAuth } from '../../hooks/hooksIndex'
+import { MenuAvatar } from '../../containers/navigation/MenuAvatar'
+import ClipLoader from 'react-spinners/ClipLoader'
+import { AuthImage } from './AuthImage'
 import { IoLockClosedOutline, IoMailOutline } from 'react-icons/io5'
+import toast, { Toaster } from 'react-hot-toast'
 import { FcGoogle } from 'react-icons/fc'
 export {}
 
@@ -57,20 +57,24 @@ export const Login = () => {
 		setLoading(true)
 		signInWithEmailAndPassword(auth, data.email, data.password)
 			.then(() => {
-				toast(`Welcome ${data.name}`)
 				navigate('/')
 				setLoading(false)
+				toast.success(`Welcome ${data.name}`)
 			})
-			.catch(error => console.error('Failed to sign in: ', error))
+			.catch(error => {
+				toast.error('Something went wrong, try again.')
+				console.error('Failed to sign in: ', error)
+			})
 	}
 
 	return (
 		<>
-			<ToastContainer />
+			<Toaster position='top-right' reverseOrder={true} />
 			<section className='flex flex-col items-center justify-center w-full h-full lg:flex-row'>
 				<div className='flex flex-col items-center justify-between w-full lg:w-[40%] xl:w-[30%] h-full lg:h-[38rem] gap-1 p-4 bg-white shadow-md md:w-96 shadow-gray-300'>
-					<Avatar className='w-32 h-32' />
-
+					<div className='h-[40%] flex items-center justify-center'>
+						<MenuAvatar />
+					</div>
 					<div className='flex flex-col w-full '>
 						<form
 							onSubmit={handleSubmit(submitData)}
@@ -104,7 +108,7 @@ export const Login = () => {
 							</div>
 							<div className='w-full py-2'>
 								<button className='auth-button bg-yellow-dark hover:ring-2 hover:ring-blue-dark focus:ring-2 focus:ring-blue-dark'>
-									{loading && <SyncLoader color='#FCA311' size='5' />}
+									{loading && <ClipLoader color='#FFF' size='10px' />}
 									{!loading && <h5>Login</h5>}
 								</button>
 							</div>
@@ -113,13 +117,13 @@ export const Login = () => {
 							<button
 								className='auth-button bg-blue-dark hover:ring-2 hover:ring-yellow-dark focus:ring-2 focus:ring-yellow-dark'
 								onClick={() => googleAuth()}>
-								{isLoading && <SyncLoader color='#FCA311' size='5' />}
+								{isLoading && <ClipLoader color='#FFF' size='10px' />}
 								{!isLoading && <FcGoogle className='text-xl' />}
 							</button>
 						</div>
 					</div>
 				</div>
-				<SignupImage />
+				<AuthImage />
 			</section>
 		</>
 	)

@@ -12,11 +12,12 @@ type MenuProps = {
 }
 
 export const NavigationMenu = ({ isOpen, toggle }: MenuProps) => {
-	const { currUser, logged, auth } = useUser()
+	const { currUser, logged, setLogged, auth } = useUser()
 	const navigate = useNavigate()
 
 	const signout = async () => {
 		auth.signOut().then(() => {
+			setLogged(false)
 			toggle()
 			navigate('/')
 		})
@@ -73,7 +74,7 @@ export const NavigationMenu = ({ isOpen, toggle }: MenuProps) => {
 						className={({ isActive }) =>
 							isActive
 								? 'menu-button text-blue-dark rounded-md bg-yellow-dark ring-2 ring-blue-dark'
-								: ' menu-button rounded-md text-blue-dark bg-yellow-dark hover:ring-2 hover:ring-orange-light'
+								: 'menu-button rounded-md text-blue-dark bg-yellow-dark hover:ring-2 hover:ring-blue-dark'
 						}
 						onClick={toggle}>
 						<IoLogInOutline />

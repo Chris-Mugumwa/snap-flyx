@@ -1,10 +1,9 @@
-import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { IoImagesOutline } from 'react-icons/io5'
-import { useQueryContext } from '../../hooks/useQueryContext'
-import { useSearch } from '../../hooks/useSearch'
+import { useQueryContext, useSearch } from '../../hooks/hooksIndex'
 
 type SearchValues = {
 	search: string
@@ -15,18 +14,20 @@ const schema = yup.object().shape({
 })
 
 const Browse = () => {
-	const [query, setQuery] = useState('')
 	const { context } = useQueryContext()
-	const { error } = useSearch(context?.query)
+	const { query, setQuery, setData, setPage } = context
+	useSearch()
 	const { handleSubmit, register } = useForm<SearchValues>({
 		resolver: yupResolver(schema),
 	})
+	const navigate = useNavigate()
 
 	const onSubmit = (data: SearchValues) => {
-		context?.setQuery(data.search)
+		setData([])
+		setPage(1)
+		setQuery(data.search)
+		navigate(`/searched/${query}`)
 	}
-
-	if (error) console.log('An error has occurred')
 
 	return (
 		<>

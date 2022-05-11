@@ -17,13 +17,6 @@ export type ImageProps = {
 	}
 }
 
-export type BreakpointProps = {
-	default: number
-	1100: number
-	700: number
-	500: number
-}
-
 export type ItemProps = {
 	data: []
 }

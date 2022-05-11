@@ -1,22 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useRandoms } from '../../hooks/useRandoms'
-import { useModal } from '../../hooks/useModal'
-import { ImageProps, BreakpointProps } from '../../types/imageProps'
-import Masonry from 'react-masonry-css'
+import { useRandoms, useModal } from '../../hooks/hooksIndex'
+import { ImageProps } from '../../types/imageProps'
+import { MasonryGrid } from '../masonry/MasonryGrid'
 import { ImageDetails } from './ImageDetails'
+import { LoadingInfinite } from '../loading/LoadingInfinite'
 export {}
-
-export const breakpointObj: BreakpointProps = {
-	default: 4,
-	1100: 3,
-	700: 2,
-	500: 1,
-}
 
 const BrowseImages = () => {
 	const [page, setPage] = useState<number>(1)
 	const [item, setItem] = useState<ImageProps | any>(null)
-	const { loading, randoms } = useRandoms(page)
+	const { randoms } = useRandoms(page)
 	const { open, toggleModal } = useModal()
 	const loader = useRef<any>(null)
 
@@ -42,14 +35,10 @@ const BrowseImages = () => {
 		toggleModal()
 	}
 
-	console.log(randoms)
-
 	return (
 		<>
-			<div className='w-full py-4 mt-2 overflow-y-scroll'>
-				<Masonry
-					breakpointCols={breakpointObj}
-					className='flex w-auto gap-2'>
+			<div className='w-full py-4 mt-2 flex flex-col items-center'>
+				<MasonryGrid>
 					{randoms?.map((image: any) => (
 						<div
 							className='mb-2 overflow-hidden break-inside'
@@ -62,8 +51,8 @@ const BrowseImages = () => {
 							/>
 						</div>
 					))}
-				</Masonry>
-				{loading && <p>...loading</p>}
+				</MasonryGrid>
+				<LoadingInfinite />
 				<div ref={loader} />
 				{open && <ImageDetails toggleModal={toggleModal} item={item} />}
 			</div>
